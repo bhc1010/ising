@@ -1,0 +1,14 @@
+[package]
+name = "ising"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+crossterm = "0.27.0"
+either = "1.10.0"
+itertools = "0.12.1"
+rand = "0.8.5"
+ratatui = "0.26.1"
+ratatui-image = { version = "0.8.1", features = ["crossterm"] }
