@@ -137,7 +137,11 @@ impl Ising {
                 for (pixel_b, encoding_b) in pixel.iter().zip(encoding.iter()) {
                     pixel_braille += pixel_b << encoding_b;
                 }
-                char::from_u32(10240 + pixel_braille as u32).unwrap()
+                if let Some(result) = char::from_u32(10240 + pixel_braille as u32) {
+                    result
+                } else {
+                    '*'
+                }
             })
             .collect();
 
