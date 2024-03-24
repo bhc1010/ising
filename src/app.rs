@@ -3,7 +3,7 @@ use crate::ising::Ising;
 use crate::parameter::{Parameter, ParameterType};
 
 use std::io;
-use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifiers};
+use crossterm::event::{self, Event, KeyCode, KeyModifiers};
 use rand::rngs::ThreadRng;
 use ratatui::{backend::Backend, Terminal};
 

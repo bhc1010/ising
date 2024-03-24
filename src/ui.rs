@@ -1,13 +1,12 @@
-use core::fmt;
-
 use crate::app::{App, MCOrder, Page};
 use crate::parameter::ParameterType;
 
+use ratatui::widgets::Padding;
 use ratatui::{
-    layout::{Alignment, Constraint, Direction, Layout},
+    layout::{Alignment, Constraint, Direction, Layout, Rect},
     style::{Color, Style},
     text::Text,
-    widgets::{Block, Borders, Chart, Dataset, Gauge, Paragraph},
+    widgets::{Block, Borders, Gauge, Paragraph, Clear},
     Frame,
 };
 
@@ -134,7 +133,7 @@ pub fn ui(frame: &mut Frame, app: &mut App) {
     // Footer
     //
 
-    let footer_block = Block::default().style(Style::default().bg(Color::White));
+    let footer_block = Block::default().style(Style::default().bg(Color::DarkGray));
 
     let footer_page = match app.page {
         Page::Main => Paragraph::new(Text::styled(
@@ -142,7 +141,7 @@ pub fn ui(frame: &mut Frame, app: &mut App) {
             Style::default().fg(Color::DarkGray),
         )),
         Page::Exit => Paragraph::new(Text::styled(
-            "  Are you sure you want to quit? Yes: (y)/(q), No: (n)",
+            "  All your ising are belong to us.",
             Style::default().fg(Color::White),
         )),
     }
@@ -191,4 +190,48 @@ pub fn ui(frame: &mut Frame, app: &mut App) {
     frame.render_widget(footer_spacing, footer_chunk[1]);
     frame.render_widget(footer_info_label, footer_chunk[2]);
     frame.render_widget(footer_info, footer_chunk[3]);
+
+    if app.page == Page::Exit {
+        let area = centered_rect(30, 25, frame.size());
+        let popup_block = Block::default()
+        .borders(Borders::ALL)
+        .padding(Padding::new(0, 0, area.height / 3, 0))
+        .style(Style::default().bg(Color::DarkGray));
+    
+    
+        let exit_text = Text::styled(
+            "Are you sure you want exit?\nYes: (y) / (q), No: (n)",
+            Style::default().fg(Color::Red),
+        ).alignment(Alignment::Center);
+        
+        let exit_paragraph = Paragraph::new(exit_text)
+            .block(popup_block)
+            .alignment(Alignment::Center);
+
+        frame.render_widget(Clear, area);
+        frame.render_widget(exit_paragraph, area);
+    }
+}
+
+/// helper function to create a centered rect using up certain percentage of the available rect `r`
+fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -> Rect {
+    // Cut the given rectangle into three vertical pieces
+    let popup_layout = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints([
+            Constraint::Percentage((100 - percent_y) / 2),
+            Constraint::Percentage(percent_y),
+            Constraint::Percentage((100 - percent_y) / 2),
+        ])
+        .split(r);
+
+    // Then cut the middle vertical piece into three width-wise pieces
+    Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([
+            Constraint::Percentage((100 - percent_x) / 2),
+            Constraint::Percentage(percent_x),
+            Constraint::Percentage((100 - percent_x) / 2),
+        ])
+        .split(popup_layout[1])[1] // Return the middle chunk
 }
