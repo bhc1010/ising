@@ -2,7 +2,6 @@ use rand::Rng;
 use either::Either;
 use std::iter::once;
 
-use crate::braille::ToBraille;
 use crate::vector::{Vec2, transpose};
 
 #[derive(Debug)]
@@ -130,14 +129,15 @@ impl Ising {
         }
 
         // Convert to braille encoding
+        let encoding = [0, 3, 1, 4, 2, 5, 6, 7];
         let pixels: Vec<char> = pixels
             .iter()
             .map(|pixel| {
                 let mut pixel_braille: u8 = 0;
-                for (i, b) in pixel.iter().enumerate() {
-                    pixel_braille += *b << (7 - i);
+                for (pixel_b, encoding_b) in pixel.iter().zip(encoding.iter()) {
+                    pixel_braille += pixel_b << encoding_b;
                 }
-                pixel_braille.to_braille()
+                char::from_u32(10240 + pixel_braille as u32).unwrap()
             })
             .collect();
 

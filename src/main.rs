@@ -3,7 +3,6 @@ mod ui;
 mod ising;
 mod parameter;
 mod vector;
-mod braille;
 
 use app::App;
 

@@ -25,10 +25,10 @@ Left@1s 8
 Sleep 6s
 Up@1s 1
 Sleep 0.5
-Left@1s 4
-Sleep 3s
-Left@1s 2
-Sleep 6s
+Left@2s 4
+Sleep 8s
+Left@2s 2
+Sleep 8s
 Down@1s 1
 Sleep 0.5
 Right@1s 24
